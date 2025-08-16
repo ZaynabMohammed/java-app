@@ -89,7 +89,7 @@ pipeline {
                             git push origin HEAD:main
                             """
                 }
-                }
+                
             }
     }
 }
