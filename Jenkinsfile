@@ -66,7 +66,7 @@ pipeline {
                     
                     rm -rf Java-App-ArgoCD
 
-                    git clone https://github.com/your-repo/Java-App-ArgoCD.git
+                    git clone git@github.com:ZaynabMohammed/argocd-java.git
                     cd Java-App-ArgoCD
                     git checkout fp
                     
