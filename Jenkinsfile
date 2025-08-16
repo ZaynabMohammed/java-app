@@ -9,6 +9,7 @@ pipeline {
     tools {
         git 'git'
         maven 'Mvn'
+		docker 'docker-v1.0'
     }
     environment {
         IMAGE_TAG = "${env.BUILD_NUMBER}"
