@@ -61,10 +61,8 @@ pipeline {
                 sh """
                     git config user.name 'ZaynabMohammed'
                     git config user.email 'zeinabmohammed817@gmail.com'
-                    git config credential.helper store
-                    echo "https://${GIT_PASS}@github.com" > ~/.git-credentials
+                    git config user.password ${GIT_PASS}
                     
-                    rm -rf Java-App-ArgoCD
 
                     git clone git@github.com:ZaynabMohammed/argocd-java.git
                     cd argocd-java
