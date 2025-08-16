@@ -67,8 +67,8 @@ pipeline {
                     rm -rf Java-App-ArgoCD
 
                     git clone git@github.com:ZaynabMohammed/argocd-java.git
-                    cd Java-App-ArgoCD
-                    git checkout fp
+                    cd argocd-java
+                    ls
                     
                     sed -i "s|image: .*|image: ${IMAGE_NAME}:v${IMAGE_TAG}|" deployment.yml
 
