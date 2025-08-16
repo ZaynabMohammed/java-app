@@ -56,25 +56,40 @@ pipeline {
             }
         }
 
-        stage('Deploy to Argo') {
-            steps {
-                sh """
-                    git config user.name 'ZaynabMohammed'
-                    git config user.email 'zeinabmohammed817@gmail.com'
-                    git config user.password ${GIT_PASS}
-                    
-
-                    git clone git@github.com:ZaynabMohammed/argocd-java.git
-                    cd argocd-java
-                    ls
-                    
-                    sed -i "s|image: .*|image: ${IMAGE_NAME}:v${IMAGE_TAG}|" deployment.yml
-
-                    git add .
-                    git commit -m "update image"
-                    git push
-                """
+      stage("Update ArgoCD manifest") {
+           steps {
+                script {
+                // Clone the ArgoCD repo
+                sh "mkdir -p argocd"
+                dir('argocd') {
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: '*/main']],
+                        extensions: [],
+                        userRemoteConfigs: [[
+                            url: 'https://github.com/ZaynabMohammed/argocd-java.git',
+                            credentialsId: 'GIT_CRED'  // Jenkins credentia user name witj pass
+                        ]]
+                    ])
+ 
+                    // Update the image tag in deployment.yaml
+                    sh "sed -i 's#        image: .*#        image: ${env.IMAGE_NAME}:${IMAGE_TAG}#' deployment.yaml"
+                    sh "cat deployment.yaml"
+                    sh "ls"
+                    sh "git add ."
+                    sh "git commit -m 'update Image'"
+                // Commit and push changes
+                    withCredentials([usernamePassword(
+                        credentialsId: 'GIT_CRED',
+                        usernameVariable: 'GIT_USER',
+                        passwordVariable: 'GIT_TOKEN'
+                )]) {
+                        sh """
+                            git remote set-url origin https://${GIT_USER}:${GIT_TOKEN}@github.com/ZaynabMohammed/argocd-java.git
+                            git push origin HEAD:main
+                            """
+                }
+                }
             }
-        }
     }
 }
