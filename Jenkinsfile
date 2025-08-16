@@ -69,7 +69,7 @@ pipeline {
                         ]]
                     ])
  
-                    sh "sed -i 's#        image: .*#        image: ${env.IMAGE_NAME}:${IMAGE_TAG}#' deployment.yaml"
+                    sh "sed -i 's#        image: .*#        image: ${env.IMAGE_NAME}:v${IMAGE_TAG}#' deployment.yaml"
                     sh "git add ."
                     sh "git commit -m 'update Image'"
              
