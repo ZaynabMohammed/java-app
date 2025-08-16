@@ -88,8 +88,10 @@ pipeline {
                             git remote set-url origin https://${GIT_USER}:${GIT_TOKEN}@github.com/ZaynabMohammed/argocd-java.git
                             git push origin HEAD:main
                             """
-                }
-                
+                    }
+                    }
+                }           
             }
     }
+}
 }
