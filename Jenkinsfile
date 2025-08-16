@@ -1,5 +1,3 @@
-// Using ECR for Final Project
-
 @Library('shared-lib') _
 
 pipeline {
@@ -59,7 +57,6 @@ pipeline {
       stage("Update ArgoCD manifest") {
            steps {
                 script {
-                // Clone the ArgoCD repo
                 sh "mkdir -p argocd"
                 dir('argocd') {
                     checkout([
@@ -68,17 +65,14 @@ pipeline {
                         extensions: [],
                         userRemoteConfigs: [[
                             url: 'https://github.com/ZaynabMohammed/argocd-java.git',
-                            credentialsId: 'GIT_CRED'  // Jenkins credentia user name witj pass
+                            credentialsId: 'GIT_CRED'  
                         ]]
                     ])
  
-                    // Update the image tag in deployment.yaml
                     sh "sed -i 's#        image: .*#        image: ${env.IMAGE_NAME}:${IMAGE_TAG}#' deployment.yaml"
-                    sh "cat deployment.yaml"
-                    sh "ls"
                     sh "git add ."
                     sh "git commit -m 'update Image'"
-                // Commit and push changes
+             
                     withCredentials([usernamePassword(
                         credentialsId: 'GIT_CRED',
                         usernameVariable: 'GIT_USER',
